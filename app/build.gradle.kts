@@ -62,6 +62,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.compose.foundation:foundation")
     implementation(libs.androidx.remote.creation.core)
+    implementation(libs.androidx.junit.ktx)
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
