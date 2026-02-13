@@ -1,4 +1,4 @@
-# LokalAuthApp – Passwordless Email OTP Authentication
+# OTPAuthApp – Passwordless Email OTP Authentication
 
 ## Features
 - Email-based OTP login (no backend)
@@ -31,6 +31,6 @@
 - Coroutines
 
 ## AI Usage
-- Used ChatGPT for guidance and debugging
+- Used GeminiAI for guidance and debugging
 - Final implementation understood and written manually
 # Naren
