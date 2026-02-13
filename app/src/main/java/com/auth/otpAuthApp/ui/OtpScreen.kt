@@ -11,17 +11,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.auth.otpAuthApp.viewmodel.AuthViewModel
-import androidx.compose.runtime.collectAsState
 
 @Composable
 fun OtpScreen(
@@ -50,7 +51,10 @@ fun OtpScreen(
             value = otp,
             onValueChange = { otp = it },
             label = { Text("6-digit OTP") },
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .testTag("otpField"),
         )
 
         state.error?.let {
@@ -58,6 +62,7 @@ fun OtpScreen(
             Text(
                 text = it,
                 color = Color.Red,
+                modifier = Modifier.testTag("otpErrorMessage"),
             )
         }
 
@@ -65,7 +70,10 @@ fun OtpScreen(
 
         Button(
             onClick = { validateOtp(otp) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .testTag("verifyOtpButton"),
         ) {
             Text("Verify")
         }
