@@ -5,21 +5,21 @@ import android.util.Log
 data class OtpData(
     val otp: String,
     val time: Long,
-    var attempts: Int
+    var attempts: Int,
 )
 
 class OtpManager {
-
     private val otpStore = mutableMapOf<String, OtpData>()
 
     fun generateOtp(email: String): String {
         val otp = (100000..999999).random().toString()
 
-        otpStore[email] = OtpData(
-            otp = otp,
-            time = System.currentTimeMillis(),
-            attempts = 0
-        )
+        otpStore[email] =
+            OtpData(
+                otp = otp,
+                time = System.currentTimeMillis(),
+                attempts = 0,
+            )
 
         // 🔴 THIS LINE IS IMPORTANT
         Log.d("OTP", "OTP for $email is $otp")
@@ -27,7 +27,10 @@ class OtpManager {
         return otp
     }
 
-    fun validateOtp(email: String, input: String): String? {
+    fun validateOtp(
+        email: String,
+        input: String,
+    ): String? {
         val data = otpStore[email] ?: return "OTP not generated"
 
         if (System.currentTimeMillis() - data.time > 60_000) {

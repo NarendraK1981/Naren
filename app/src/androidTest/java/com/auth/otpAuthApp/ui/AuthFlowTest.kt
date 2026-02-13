@@ -1,13 +1,16 @@
 package com.auth.otpAuthApp.ui
 
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import com.auth.otpAuthApp.MainActivity
 import org.junit.Rule
 import org.junit.Test
 
 class AuthFlowTest {
-
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
@@ -28,7 +31,7 @@ class AuthFlowTest {
     fun testInvalidEmailError() {
         // 1. Enter invalid email
         composeTestRule.onNodeWithTag("emailField").performTextInput("invalid-email")
-        
+
         // 2. Wait for debounce (1.5s in ViewModel)
         composeTestRule.mainClock.advanceTimeBy(2000)
 
