@@ -1,0 +1,106 @@
+name: CI/CD Pipeline
+
+# ---------------------------------------------------------
+# 1. WORKFLOW TRIGGERS
+# ---------------------------------------------------------
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # manual trigger
+
+# ---------------------------------------------------------
+# 2. GLOBAL ACCESS RULES (permissions)
+# ---------------------------------------------------------
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write        # required for OIDC deployments
+  actions: read
+
+# ---------------------------------------------------------
+# 3. JOBS
+# ---------------------------------------------------------
+
+jobs:
+
+  # -------------------------------------------------------
+  # LINTING JOB
+  # -------------------------------------------------------
+  lint:
+    name: Lint Codebase
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+  # -------------------------------------------------------
+  # TEST JOB
+  # -------------------------------------------------------
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+  # -------------------------------------------------------
+  # DEPLOYMENT JOB
+  # -------------------------------------------------------
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+
+    environment:
+      name: production
+      url: https://your-production-url.com
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure cloud credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/YourDeploymentRole
+          aws-region: us-east-1
+
+      - name: Deploy application
+        run: |
+          echo "Deploying..."
+          # your deployment script here
