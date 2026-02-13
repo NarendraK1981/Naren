@@ -1,6 +1,6 @@
 package com.auth.otpAuthApp.data
 
-import android.util.Log
+import timber.log.Timber
 
 data class OtpData(
     val otp: String,
@@ -21,8 +21,7 @@ class OtpManager {
                 attempts = 0,
             )
 
-        // 🔴 THIS LINE IS IMPORTANT
-        Log.d("OTP", "OTP for $email is $otp")
+        Timber.d("OTP for %s is %s", email, otp)
 
         return otp
     }
