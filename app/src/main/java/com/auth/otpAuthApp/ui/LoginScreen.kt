@@ -80,6 +80,7 @@ fun CustomTextField(
         value = email,
         onValueChange = { onValueChange(it) },
         label = { Text("Email") },
+        placeholder = { Text("Enter your email") },
         modifier =
             Modifier
                 .fillMaxWidth()

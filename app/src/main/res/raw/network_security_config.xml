@@ -1,0 +1,4 @@
+    <trust-anchors>
+        <certificates src="@raw/my_ca_cert" />
+        <certificates src="system" />
+    </trust-anchors>

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -67,6 +69,19 @@ dependencies {
     implementation(libs.androidx.remote.creation.core)
     implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.navigation.compose)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.volley)
+    implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.material3)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

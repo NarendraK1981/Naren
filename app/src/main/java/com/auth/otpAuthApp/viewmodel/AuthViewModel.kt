@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.auth.otpAuthApp.analytics.AnalyticsLogger
 import com.auth.otpAuthApp.data.OtpManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
@@ -14,8 +15,10 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import javax.inject.Inject
 
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor() : ViewModel() {
     private val _authActions = Channel<AuthAction>(Channel.BUFFERED)
     val authActions: Channel<AuthAction> = _authActions
 
@@ -77,10 +80,10 @@ class AuthViewModel : ViewModel() {
     }
 
     fun sendOtp(email: String) {
-        otpManager.generateOtp(email)
+        val otp = otpManager.generateOtp(email)
         AnalyticsLogger.otpGenerated()
         _authEvent.trySend(AuthEvent.LoadOtpScreen)
-        _state.value = _state.value.copy(email = email, screen = Screen.OTP)
+        _state.value = _state.value.copy(email = email, screen = Screen.OTP, prepopulatedOtp = otp)
     }
 
     fun verifyOtp(otp: String) {

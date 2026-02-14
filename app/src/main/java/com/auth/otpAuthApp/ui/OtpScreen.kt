@@ -1,5 +1,6 @@
 package com.auth.otpAuthApp.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,8 +31,10 @@ fun OtpScreen(
     vm: AuthViewModel,
     validateOtp: (String) -> Unit,
 ) {
-    var otp by rememberSaveable { mutableStateOf("") }
     val state = vm.state.collectAsState().value
+    var otp by rememberSaveable { mutableStateOf(state.prepopulatedOtp ?: "") }
+    val context = LocalContext.current
+
 
     Column(
         modifier =
@@ -76,6 +80,10 @@ fun OtpScreen(
                     .testTag("verifyOtpButton"),
         ) {
             Text("Verify")
+        }
+
+        state.prepopulatedOtp?.let {
+            Toast.makeText(context, "OTP prepulated", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -16,7 +16,8 @@
 
 ## Architecture
 - Jetpack Compose UI
-- ViewModel + UI State
+- ViewModel + UI State + Events + Actions
+- DI with Hilt
 - One-way data flow
 - No global mutable state
 

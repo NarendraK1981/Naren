@@ -1,9 +1,10 @@
 package com.auth.otpAuthApp
 
+import ProductScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -23,7 +24,7 @@ fun AppEntry(
     modifier: Modifier,
     navController: NavController,
 ) {
-    val viewModel = remember { AuthViewModel() }
+    val viewModel : AuthViewModel = hiltViewModel()
 
     val navHostController = navController as NavHostController
 
@@ -56,7 +57,7 @@ fun AppEntry(
                     }
 
                     is AuthEvent.LoginSuccess -> {
-                        navHostController.navigate(Screen.SESSION.name)
+                        navHostController.navigate(Screen.PRODUCT.name)
                     }
 
                     is AuthEvent.LogOut -> {
@@ -73,8 +74,11 @@ fun AppEntry(
         composable(Screen.OTP.name) {
             OtpScreen(viewModel, validateOtp)
         }
+        composable(Screen.PRODUCT.name) {
+            ProductScreen(sessionExpired = sessionExpired)
+        }
         composable(Screen.SESSION.name) {
-            SessionScreen(viewModel, sessionExpired)
+            SessionScreen(sessionExpired = sessionExpired)
         }
     }
 }
