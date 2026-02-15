@@ -21,3 +21,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "OTPAuthApp"
 include(":app")
+include(":core:common")
+include(":core:domain")
+include(":core:data")
+include(":core:ui")
+include(":feature:auth")
+include(":feature:products")

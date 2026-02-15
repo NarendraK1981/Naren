@@ -1,21 +1,21 @@
 package com.auth.otpAuthApp
 
-import ProductScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.auth.otpAuthApp.ui.OtpScreen
-import com.auth.otpAuthApp.ui.SessionScreen
-import com.auth.otpAuthApp.uiscreens.LoginScreen
-import com.auth.otpAuthApp.viewmodel.AuthAction
-import com.auth.otpAuthApp.viewmodel.AuthEvent
-import com.auth.otpAuthApp.viewmodel.AuthViewModel
-import com.auth.otpAuthApp.viewmodel.Screen
+import com.auth.otpAuthApp.feature.auth.AuthAction
+import com.auth.otpAuthApp.feature.auth.AuthEvent
+import com.auth.otpAuthApp.feature.auth.AuthViewModel
+import com.auth.otpAuthApp.feature.auth.LoginScreen
+import com.auth.otpAuthApp.feature.auth.OtpScreen
+import com.auth.otpAuthApp.feature.auth.Screen
+import com.auth.otpAuthApp.feature.auth.SessionScreen
+import com.auth.otpAuthApp.feature.products.ProductScreen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 

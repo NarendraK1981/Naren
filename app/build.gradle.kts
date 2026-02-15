@@ -1,8 +1,9 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
@@ -47,15 +48,20 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
+    kotlinOptions {
+        jvmTarget = "11"
     }
 }
 
 dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:data"))
+    implementation(project(":core:ui"))
+    implementation(project(":feature:auth"))
+    implementation(project(":feature:products"))
+
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx.v1131)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
@@ -64,37 +70,13 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.appcompat.v171)
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.remote.creation.core)
-    implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.navigation.compose)
 
     // Hilt
     implementation(libs.hilt.android)
-    implementation(libs.volley)
-    implementation(libs.androidx.compose.runtime.livedata)
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.material3)
+    implementation(libs.core.ktx)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
-
-    testImplementation(libs.junit)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.robolectric)
-
-    androidTestImplementation(libs.androidx.junit.v130)
-    androidTestImplementation(libs.androidx.espresso.core.v370)
-    androidTestImplementation(platform(libs.androidx.compose.bom.v20240201))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    debugImplementation(libs.androidx.compose.ui.tooling)
-
     implementation(libs.timber)
-    implementation(libs.kotlinx.coroutines.android)
 }
