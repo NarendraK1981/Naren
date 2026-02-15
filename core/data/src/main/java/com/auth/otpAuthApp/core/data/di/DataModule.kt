@@ -2,6 +2,7 @@ package com.auth.otpAuthApp.core.data.di
 
 import com.auth.otpAuthApp.core.data.ApiService
 import com.auth.otpAuthApp.core.data.ProductRepositoryImpl
+import com.auth.otpAuthApp.core.domain.GetProductsUseCase
 import com.auth.otpAuthApp.core.domain.ProductRepository
 import dagger.Binds
 import dagger.Module
@@ -32,5 +33,12 @@ abstract class DataModule {
                 .build()
                 .create(ApiService::class.java)
         }
+
+        @Provides
+        @Singleton
+        fun provideGetProductsUseCase(repositoryModule: ProductRepository): GetProductsUseCase =
+            GetProductsUseCase(repositoryModule)
     }
 }
+
+
