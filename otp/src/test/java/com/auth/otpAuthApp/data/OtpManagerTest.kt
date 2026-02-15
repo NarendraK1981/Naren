@@ -1,5 +1,6 @@
 package com.auth.otpAuthApp.data
 
+import com.auth.otpAuthApp.feature.model.OtpManager
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue

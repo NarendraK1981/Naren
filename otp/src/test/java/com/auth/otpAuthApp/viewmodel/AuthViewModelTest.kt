@@ -1,6 +1,8 @@
 package com.auth.otpAuthApp.viewmodel
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.auth.otpAuthApp.feature.auth.AuthViewModel
+import com.auth.otpAuthApp.feature.auth.Screen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -50,7 +52,7 @@ class AuthViewModelTest {
     fun `invalid email should show error after debounce`() = runTest {
         viewModel.validateEmail("invalid-email")
 
-        // Advance time to trigger debounce (1500ms)
+        // Advance time to trigger debounce
         testScheduler.advanceTimeBy(2000)
 
         assertEquals("Invalid email format", viewModel.state.value.error)
