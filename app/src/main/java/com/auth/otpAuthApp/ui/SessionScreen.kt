@@ -46,9 +46,9 @@ fun SessionScreen(
 
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(24.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

@@ -20,25 +20,24 @@ fun ProductCard(product: Product) {
         modifier = Modifier
             .fillMaxWidth()
             .shadow(4.dp, RoundedCornerShape(12.dp)),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-
             Text(
                 text = product.name,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
             )
 
             Text(
                 text = "$${product.price}",
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color(0xFF388E3C)
+                color = Color(0xFF388E3C),
             )
 
             Text(
                 text = if (product.inStock) "In Stock" else "Out of Stock",
                 style = MaterialTheme.typography.bodyMedium,
-                color = if (product.inStock) Color(0xFF2E7D32) else Color.Red
+                color = if (product.inStock) Color(0xFF2E7D32) else Color.Red,
             )
         }
     }

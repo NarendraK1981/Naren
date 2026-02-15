@@ -28,12 +28,11 @@ import com.auth.otpAuthApp.ui.ProductCard
 import com.auth.otpAuthApp.ui.ProductUiState
 import com.auth.otpAuthApp.viewmodel.ProductViewModel
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScreen(
     viewModel: ProductViewModel = hiltViewModel(),
-    sessionExpired: () -> Unit
+    sessionExpired: () -> Unit,
 ) {
     val uiState by viewModel.uiState.observeAsState(ProductUiState.Loading)
 
@@ -52,20 +51,19 @@ fun ProductScreen(
             Button(onClick = { sessionExpired() }, modifier = Modifier.fillMaxWidth()) {
                 Text("Logout")
             }
-        }
+        },
 
     ) { padding ->
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(padding),
         ) {
             when (uiState) {
-
                 is ProductUiState.Loading -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
 
@@ -74,7 +72,7 @@ fun ProductScreen(
 
                     Column(
                         modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(text = message, color = Color.Red)
                         Spacer(modifier = Modifier.height(12.dp))
@@ -90,7 +88,7 @@ fun ProductScreen(
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(16.dp)
+                            .padding(16.dp),
                     ) {
                         items(products) { product ->
                             ProductCard(product)
@@ -98,7 +96,6 @@ fun ProductScreen(
                         }
                     }
                 }
-
             }
         }
     }

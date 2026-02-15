@@ -29,9 +29,9 @@ fun LoginScreen(
 
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(24.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
@@ -62,9 +62,9 @@ fun LoginScreen(
             onClick = { onLoginClick(email) },
             enabled = state.isValidEmail,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .testTag("sendOtpButton"),
+            Modifier
+                .fillMaxWidth()
+                .testTag("sendOtpButton"),
         ) {
             Text("Send OTP")
         }
@@ -82,8 +82,8 @@ fun CustomTextField(
         label = { Text("Email") },
         placeholder = { Text("Enter your email") },
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .testTag("emailField"),
+        Modifier
+            .fillMaxWidth()
+            .testTag("emailField"),
     )
 }

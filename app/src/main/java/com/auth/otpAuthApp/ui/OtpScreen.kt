@@ -35,12 +35,11 @@ fun OtpScreen(
     var otp by rememberSaveable { mutableStateOf(state.prepopulatedOtp ?: "") }
     val context = LocalContext.current
 
-
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(24.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
@@ -56,9 +55,9 @@ fun OtpScreen(
             onValueChange = { otp = it },
             label = { Text("6-digit OTP") },
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .testTag("otpField"),
+            Modifier
+                .fillMaxWidth()
+                .testTag("otpField"),
         )
 
         state.error?.let {
@@ -75,9 +74,9 @@ fun OtpScreen(
         Button(
             onClick = { validateOtp(otp) },
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .testTag("verifyOtpButton"),
+            Modifier
+                .fillMaxWidth()
+                .testTag("verifyOtpButton"),
         ) {
             Text("Verify")
         }

@@ -24,7 +24,7 @@ fun AppEntry(
     modifier: Modifier,
     navController: NavController,
 ) {
-    val viewModel : AuthViewModel = hiltViewModel()
+    val viewModel: AuthViewModel = hiltViewModel()
 
     val navHostController = navController as NavHostController
 

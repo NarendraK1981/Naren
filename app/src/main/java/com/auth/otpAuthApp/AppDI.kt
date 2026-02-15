@@ -21,25 +21,18 @@ object AppDI {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    fun provideRetrofit(): Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService =
-        retrofit.create(ApiService::class.java)
-
-
-
-
+    fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
 
     @Provides
     @Singleton
-    fun provideGetProductsUseCase(repositoryModule: ProductRepository): GetProductsUseCase =
-        GetProductsUseCase(repositoryModule)
+    fun provideGetProductsUseCase(repositoryModule: ProductRepository): GetProductsUseCase = GetProductsUseCase(repositoryModule)
 }
 
 @Module

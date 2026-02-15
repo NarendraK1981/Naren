@@ -47,6 +47,7 @@ class AuthViewModel @Inject constructor() : ViewModel() {
             is AuthAction.Login -> {
                 _authEvent.trySend(AuthEvent.Login(action.email))
             }
+
             is AuthAction.Otp -> {
                 _authEvent.trySend(AuthEvent.Otp(action.otp))
             }

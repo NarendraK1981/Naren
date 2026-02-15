@@ -29,8 +29,8 @@ class AuthFlowTest {
         // Wait for the Send OTP button to be enabled (due to debounce in ViewModel)
         composeTestRule.waitUntil(5000) {
             composeTestRule.onAllNodesWithTag("sendOtpButton")
-                .fetchSemanticsNodes().any { 
-                    it.config.getOrNull(SemanticsProperties.Disabled) == null 
+                .fetchSemanticsNodes().any {
+                    it.config.getOrNull(SemanticsProperties.Disabled) == null
                 }
         }
 

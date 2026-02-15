@@ -47,25 +47,23 @@ class AuthViewModelTest {
     }
 
     @Test
-    fun `invalid email should show error after debounce`() =
-        runTest {
-            viewModel.validateEmail("invalid-email")
+    fun `invalid email should show error after debounce`() = runTest {
+        viewModel.validateEmail("invalid-email")
 
-            // Advance time to trigger debounce (1500ms)
-            testScheduler.advanceTimeBy(2000)
+        // Advance time to trigger debounce (1500ms)
+        testScheduler.advanceTimeBy(2000)
 
-            assertEquals("Invalid email format", viewModel.state.value.error)
-        }
+        assertEquals("Invalid email format", viewModel.state.value.error)
+    }
 
     @Test
-    fun `valid email should not show error after debounce`() =
-        runTest {
-            viewModel.validateEmail("valid@example.com")
+    fun `valid email should not show error after debounce`() = runTest {
+        viewModel.validateEmail("valid@example.com")
 
-            testScheduler.advanceTimeBy(2000)
+        testScheduler.advanceTimeBy(2000)
 
-            assertNull(viewModel.state.value.error)
-        }
+        assertNull(viewModel.state.value.error)
+    }
 
     @Test
     fun `sendOtp should move to OTP screen and integrate with OtpManager`() {

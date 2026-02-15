@@ -14,23 +14,25 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ProductViewModel
-    @Inject
-    constructor(private val getProductsUseCase: GetProductsUseCase) : ViewModel() {
+@Inject
+constructor(
+    private val getProductsUseCase: GetProductsUseCase,
+) : ViewModel() {
 
     private val _uiState = MutableLiveData<ProductUiState>(ProductUiState.Loading)
     val uiState: LiveData<ProductUiState> = _uiState
 
-        init {
-            fetchProducts()
-        }
+    init {
+        fetchProducts()
+    }
 
-        fun fetchProducts() {
-            _uiState.value = ProductUiState.Loading
+    fun fetchProducts() {
+        _uiState.value = ProductUiState.Loading
 
-            viewModelScope.launch {
-                delay(1000L)
-                val products = getProductsUseCase()
-                _uiState.value = ProductUiState.Success(products)
-            }
+        viewModelScope.launch {
+            delay(1000L)
+            val products = getProductsUseCase()
+            _uiState.value = ProductUiState.Success(products)
         }
     }
+}
