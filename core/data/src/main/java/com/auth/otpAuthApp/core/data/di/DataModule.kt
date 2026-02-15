@@ -1,6 +1,10 @@
 package com.auth.otpAuthApp.core.data.di
 
+import android.content.Context
+import androidx.room.Room
 import com.auth.otpAuthApp.core.data.ApiService
+import com.auth.otpAuthApp.core.data.ProductDao
+import com.auth.otpAuthApp.core.data.ProductDatabase
 import com.auth.otpAuthApp.core.data.ProductRepositoryImpl
 import com.auth.otpAuthApp.core.domain.GetProductsUseCase
 import com.auth.otpAuthApp.core.domain.ProductRepository
@@ -8,6 +12,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -38,7 +43,21 @@ abstract class DataModule {
         @Singleton
         fun provideGetProductsUseCase(repositoryModule: ProductRepository): GetProductsUseCase =
             GetProductsUseCase(repositoryModule)
+
+        @Provides
+        @Singleton
+        fun provideDatabase(@ApplicationContext context: Context): ProductDatabase {
+            return Room.databaseBuilder(
+                context,
+                ProductDatabase::class.java,
+                "product_db"
+            ).build()
+        }
+
+        @Provides
+        @Singleton
+        fun provideProductDao(database: ProductDatabase): ProductDao {
+            return database.productDao()
+        }
     }
 }
-
-
