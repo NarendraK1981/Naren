@@ -20,7 +20,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "OTPAuthApp"
-include(":app")
+include(":otp")
 include(":core:common")
 include(":core:domain")
 include(":core:data")
