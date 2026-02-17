@@ -60,10 +60,10 @@ android {
 }
 
 dependencies {
-    implementation("core:common")
-    implementation("core:domain")
-    implementation("core:data")
-    implementation("core:ui")
+    implementation(libs.common)
+    implementation(libs.domain)
+    implementation(libs.ui)
+    implementation(libs.data)
     implementation(project(":feature:auth"))
     implementation(project(":feature:products"))
 
