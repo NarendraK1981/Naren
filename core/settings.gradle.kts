@@ -17,12 +17,15 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }
 
-rootProject.name = "OTPAuthApp"
-
-includeBuild("core")
-
-include(":otp")
-include(":feature:auth")
-include(":feature:products")
+rootProject.name = "core"
+include(":common")
+include(":domain")
+include(":data")
+include(":ui")

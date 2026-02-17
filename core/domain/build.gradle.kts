@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:common"))
+    implementation(project(":common"))
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.jakarta.inject.api)
 }
