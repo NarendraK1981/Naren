@@ -8,6 +8,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Entity(tableName = "products")
 data class ProductEntity(
@@ -15,7 +17,8 @@ data class ProductEntity(
     val id: Int = 0,
     val name: String,
     val price: Double,
-    val inStock: Boolean
+    val inStock: Boolean,
+    val thumbnail: String
 )
 
 @Dao
@@ -27,7 +30,14 @@ interface ProductDao {
     suspend fun insertProducts(products: List<ProductEntity>)
 }
 
-@Database(entities = [ProductEntity::class], version = 1)
+@Database(entities = [ProductEntity::class], version = 2)
 abstract class ProductDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
+}
+
+
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE products ADD COLUMN thumbnail TEXT NOT NULL DEFAULT ''")
+    }
 }

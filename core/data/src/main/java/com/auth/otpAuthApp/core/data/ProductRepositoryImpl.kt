@@ -31,7 +31,8 @@ class ProductRepositoryImpl @Inject constructor(
                         id = entity.id,
                         name = entity.name,
                         price = entity.price,
-                        inStock = entity.inStock
+                        inStock = entity.inStock,
+                        thumbnail = entity.thumbnail
                     )
                 }
             }
@@ -51,12 +52,13 @@ class ProductRepositoryImpl @Inject constructor(
                 }
             }
 
-            val products = apiResponse?.product?.map { dto ->
+            val products = apiResponse?.products?.map { dto ->
                 Product(
                     id = dto.id,
-                    name = dto.name,
+                    name = dto.title,
                     price = dto.price,
-                    inStock = dto.inStock,
+                    inStock = dto.stock > 0,
+                    thumbnail = dto.thumbnail
                 )
             } ?: getFallbackProducts()
 
@@ -66,7 +68,8 @@ class ProductRepositoryImpl @Inject constructor(
                     id = it.id,
                     name = it.name,
                     price = it.price,
-                    inStock = it.inStock
+                    inStock = it.inStock,
+                    thumbnail = it.thumbnail
                 )
             })
 
@@ -80,10 +83,10 @@ class ProductRepositoryImpl @Inject constructor(
 
     private suspend fun getFallbackProducts(): List<Product> {
         val products = listOf(
-            Product(id = 1, name = "Product 1", price = 10.0, inStock = true),
-            Product(id = 2, name = "Product 2", price = 10.0, inStock = true),
-            Product(id = 3, name = "Product 3", price = 10.0, inStock = false),
-            Product(id = 4, name = "Product 4", price = 10.0, inStock = true),
+            Product(id = 1, name = "Product 1", price = 10.0, inStock = true, thumbnail = ""),
+            Product(id = 2, name = "Product 2", price = 10.0, inStock = true, thumbnail = ""),
+            Product(id = 3, name = "Product 3", price = 10.0, inStock = false, thumbnail = ""),
+            Product(id = 4, name = "Product 4", price = 10.0, inStock = true, thumbnail = ""),
         )
 
         productDao.insertProducts(products.map {
@@ -91,7 +94,8 @@ class ProductRepositoryImpl @Inject constructor(
                 id = it.id,
                 name = it.name,
                 price = it.price,
-                inStock = it.inStock
+                inStock = it.inStock,
+                thumbnail = it.thumbnail
             )
         })
 

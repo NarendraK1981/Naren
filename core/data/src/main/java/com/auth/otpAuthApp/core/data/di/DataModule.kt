@@ -3,6 +3,7 @@ package com.auth.otpAuthApp.core.data.di
 import android.content.Context
 import androidx.room.Room
 import com.auth.otpAuthApp.core.data.ApiService
+import com.auth.otpAuthApp.core.data.MIGRATION_1_2
 import com.auth.otpAuthApp.core.data.ProductDao
 import com.auth.otpAuthApp.core.data.ProductDatabase
 import com.auth.otpAuthApp.core.data.ProductRepositoryImpl
@@ -44,6 +45,8 @@ abstract class DataModule {
         fun provideGetProductsUseCase(repositoryModule: ProductRepository): GetProductsUseCase =
             GetProductsUseCase(repositoryModule)
 
+        // ... inside DataModule.kt
+
         @Provides
         @Singleton
         fun provideDatabase(@ApplicationContext context: Context): ProductDatabase {
@@ -51,7 +54,7 @@ abstract class DataModule {
                 context,
                 ProductDatabase::class.java,
                 "product_db"
-            ).build()
+            ).addMigrations(MIGRATION_1_2).build()
         }
 
         @Provides
