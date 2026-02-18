@@ -2,6 +2,7 @@ package com.auth.otpAuthApp.core.data.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.auth.otpAuthApp.core.data.ApiService
 import com.auth.otpAuthApp.core.data.ProductDao
 import com.auth.otpAuthApp.core.data.ProductDatabase
@@ -51,13 +52,19 @@ abstract class DataModule {
                 context,
                 ProductDatabase::class.java,
                 "product_db"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
         }
 
         @Provides
         @Singleton
         fun provideProductDao(database: ProductDatabase): ProductDao {
             return database.productDao()
+        }
+
+        @Provides
+        @Singleton
+        fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
+            return WorkManager.getInstance(context)
         }
     }
 }

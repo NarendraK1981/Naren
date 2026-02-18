@@ -44,7 +44,7 @@ interface ProductDao {
 
 @Database(
     entities = [ProductEntity::class],
-    version = 1,
+    version = 5,
     exportSchema = true
 )
 @TypeConverters(Converters::class)

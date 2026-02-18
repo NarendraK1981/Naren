@@ -76,6 +76,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.firebase.components)
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
@@ -86,6 +87,11 @@ dependencies {
     implementation(libs.core.ktx)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.work.compiler)
+
+    // Work Manager
+    implementation(libs.androidx.work.runtime.ktx)
 
     implementation(libs.timber)
     testImplementation(kotlin("test"))
