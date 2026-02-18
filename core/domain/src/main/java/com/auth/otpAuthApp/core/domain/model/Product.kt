@@ -10,5 +10,16 @@ data class Product(
     val price: Double,
     val inStock: Boolean,
     val thumbnail: String,
-    val carouselImages: List<String>
+    val carouselImages: List<String>,
+    val rating: Double,
+    val reviews: List<Review>
+
+)
+@Serializable
+data class Review(
+    val rating: Int,
+    val comment: String,
+    val date: String,
+    val reviewerName: String,
+    val reviewerEmail: String
 )
