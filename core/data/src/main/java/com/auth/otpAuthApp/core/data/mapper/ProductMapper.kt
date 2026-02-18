@@ -8,6 +8,7 @@ fun ProductDto.toDomain(): Product {
     return Product(
         id = id,
         name = title,
+        description = description,
         price = price,
         inStock = stock > 0,
         thumbnail = thumbnail,
@@ -19,6 +20,7 @@ fun ProductEntity.toDomain(): Product {
     return Product(
         id = id,
         name = name,
+        description = description,
         price = price,
         inStock = inStock,
         thumbnail = thumbnail,
@@ -30,6 +32,7 @@ fun Product.toEntity(): ProductEntity {
     return ProductEntity(
         id = id,
         name = name,
+        description = description,
         price = price,
         inStock = inStock,
         thumbnail = thumbnail,

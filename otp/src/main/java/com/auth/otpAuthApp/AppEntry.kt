@@ -91,7 +91,7 @@ fun AppEntry(
 
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Login,
+        startDestination = Screen.Product,
         modifier = modifier
     ) {
         composable<Screen.Login> {
@@ -111,8 +111,8 @@ fun AppEntry(
         ) { backStackEntry ->
             val productPage: Screen.ProductPage = backStackEntry.toRoute()
             ProductPageScreen(
-                sessionExpired = sessionExpired,
                 product = productPage.product,
+                onBackClick = { navHostController.popBackStack() }
             )
         }
         composable<Screen.Session> {

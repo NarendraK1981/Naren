@@ -74,7 +74,8 @@ fun ProductCardPreview() {
             price = 10.0,
             inStock = true,
             thumbnail = "https://via.placeholder.com/150",
-            carouselImages = emptyList()
+            carouselImages = emptyList(),
+                    description = "",
         ),
         onProductItemClick = {},
     )

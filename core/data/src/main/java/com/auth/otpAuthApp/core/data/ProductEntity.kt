@@ -9,14 +9,13 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Entity(tableName = "products")
 data class ProductEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
+    val description: String,
     val price: Double,
     val inStock: Boolean,
     val thumbnail: String,
@@ -32,21 +31,12 @@ interface ProductDao {
     suspend fun insertProducts(products: List<ProductEntity>)
 }
 
-@Database(entities = [ProductEntity::class], version = 3)
+@Database(
+    entities = [ProductEntity::class],
+    version = 1,
+    exportSchema = true
+)
 @TypeConverters(Converters::class)
 abstract class ProductDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
-}
-
-
-val MIGRATION_1_2 = object : Migration(1, 2) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE products ADD COLUMN thumbnail TEXT NOT NULL DEFAULT ''")
-    }
-}
-
-val MIGRATION_2_3 = object : Migration(2, 3) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE products ADD COLUMN carouselImages TEXT NOT NULL DEFAULT '[]'")
-    }
 }

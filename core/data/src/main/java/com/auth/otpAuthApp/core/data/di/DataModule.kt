@@ -3,8 +3,6 @@ package com.auth.otpAuthApp.core.data.di
 import android.content.Context
 import androidx.room.Room
 import com.auth.otpAuthApp.core.data.ApiService
-import com.auth.otpAuthApp.core.data.MIGRATION_1_2
-import com.auth.otpAuthApp.core.data.MIGRATION_2_3
 import com.auth.otpAuthApp.core.data.ProductDao
 import com.auth.otpAuthApp.core.data.ProductDatabase
 import com.auth.otpAuthApp.core.data.ProductRepositoryImpl
@@ -53,7 +51,7 @@ abstract class DataModule {
                 context,
                 ProductDatabase::class.java,
                 "product_db"
-            ).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()
+            ).build()
         }
 
         @Provides
