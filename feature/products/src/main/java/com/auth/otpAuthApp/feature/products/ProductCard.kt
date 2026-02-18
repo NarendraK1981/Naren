@@ -87,7 +87,8 @@ fun ProductCardPreview() {
             carouselImages = emptyList(),
             description = "",
             rating = 4.5,
-            reviews = emptyList()
+            reviews = emptyList(),
+            minimumOrderQuantity = 1
         ),
         onProductItemClick = {},
     )

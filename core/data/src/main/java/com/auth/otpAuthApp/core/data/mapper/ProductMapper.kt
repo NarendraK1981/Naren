@@ -24,7 +24,8 @@ fun ProductDto.toDomain(): Product {
                 reviewerName = review.reviewerName,
                 reviewerEmail = review.reviewerEmail
             )
-        }
+        },
+        minimumOrderQuantity = minimumOrderQuantity
     )
 }
 
@@ -46,7 +47,8 @@ fun ProductEntity.toDomain(): Product {
                 reviewerName = review.reviewerName,
                 reviewerEmail = review.reviewerEmail
             )
-        }
+        },
+        minimumOrderQuantity = minimumOrderQuantity
     )
 }
 
@@ -64,10 +66,11 @@ fun Product.toEntity(): ProductEntity {
             Review(
                 rating = review.rating,
                 comment = review.comment,
-                date = DateUtils.formatDate(review.date),
+                date = DateUtils.formatDate(review.date)  ,
                 reviewerName = review.reviewerName,
                 reviewerEmail = review.reviewerEmail
             )
-        }
+        },
+        minimumOrderQuantity = minimumOrderQuantity
     )
 }

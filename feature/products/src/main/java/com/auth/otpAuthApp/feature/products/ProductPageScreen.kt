@@ -20,8 +20,13 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -29,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -55,6 +61,9 @@ fun ProductPageScreen(
     val pagerState = rememberPagerState(pageCount = { product.carouselImages.size })
     var showReviews by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
+
+    var quantityExpanded by remember { mutableStateOf(false) }
+    var selectedQuantity by remember { mutableIntStateOf(1) }
 
     Scaffold(
         topBar = {
@@ -163,8 +172,57 @@ fun ProductPageScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Black
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            // Quantity Dropdown
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Quantity:",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Box {
+                    Row(
+                        modifier = Modifier
+                            .background(Color.LightGray.copy(alpha = 0.3f), MaterialTheme.shapes.small)
+                            .clickable { quantityExpanded = true }
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = selectedQuantity.toString(),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "Select Quantity"
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = quantityExpanded,
+                        onDismissRequest = { quantityExpanded = false }
+                    ) {
+                        (1..product.minimumOrderQuantity).forEach { qty ->
+                            DropdownMenuItem(
+                                text = { Text(qty.toString()) },
+                                onClick = {
+                                    selectedQuantity = qty
+                                    quantityExpanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
+
+
+
+    Spacer(modifier = Modifier.height(24.dp))
 
     if (showReviews) {
         ModalBottomSheet(

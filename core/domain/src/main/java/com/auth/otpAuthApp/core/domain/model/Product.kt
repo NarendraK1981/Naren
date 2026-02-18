@@ -12,8 +12,8 @@ data class Product(
     val thumbnail: String,
     val carouselImages: List<String>,
     val rating: Double,
-    val reviews: List<Review>
-
+    val reviews: List<Review>,
+    val minimumOrderQuantity:Int
 )
 @Serializable
 data class Review(
