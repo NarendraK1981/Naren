@@ -10,7 +10,8 @@ fun ProductDto.toDomain(): Product {
         name = title,
         price = price,
         inStock = stock > 0,
-        thumbnail = thumbnail
+        thumbnail = thumbnail,
+        carouselImages = images
     )
 }
 
@@ -20,7 +21,8 @@ fun ProductEntity.toDomain(): Product {
         name = name,
         price = price,
         inStock = inStock,
-        thumbnail = thumbnail
+        thumbnail = thumbnail,
+        carouselImages = carouselImages
     )
 }
 
@@ -30,6 +32,7 @@ fun Product.toEntity(): ProductEntity {
         name = name,
         price = price,
         inStock = inStock,
-        thumbnail = thumbnail
+        thumbnail = thumbnail,
+        carouselImages = carouselImages
     )
 }

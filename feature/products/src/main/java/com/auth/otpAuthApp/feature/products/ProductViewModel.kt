@@ -32,7 +32,19 @@ constructor(
         viewModelScope.launch {
             delay(1000L)
             val products = getProductsUseCase()
-            _uiState.value = ProductUiState.Success(products)
+
+            when {
+                products.isEmpty() -> {
+                    _uiState.value = ProductUiState.Error("No products found")
+                }
+                products.any { !it.inStock } -> {
+                    _uiState.value = ProductUiState.Error("Not all products in stock")
+                }
+                else -> {
+                    _uiState.value = ProductUiState.Success(products)
+                }
+
+            }
         }
     }
 }

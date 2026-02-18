@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
+import kotlinx.serialization.Serializable
 
 @HiltViewModel
 class AuthViewModel @Inject constructor() : ViewModel() {
@@ -84,7 +85,7 @@ class AuthViewModel @Inject constructor() : ViewModel() {
         val otp = otpManager.generateOtp(email)
         AnalyticsLogger.otpGenerated()
         _authEvent.trySend(AuthEvent.LoadOtpScreen)
-        _state.value = _state.value.copy(email = email, screen = Screen.OTP, prepopulatedOtp = otp)
+        _state.value = _state.value.copy(email = email, prepopulatedOtp = otp)
     }
 
     fun verifyOtp(otp: String) {
@@ -94,7 +95,6 @@ class AuthViewModel @Inject constructor() : ViewModel() {
             _authEvent.trySend(AuthEvent.LoginSuccess)
             _state.value =
                 _state.value.copy(
-                    screen = Screen.SESSION,
                     sessionStart = System.currentTimeMillis(),
                 )
         } else {
@@ -106,7 +106,7 @@ class AuthViewModel @Inject constructor() : ViewModel() {
     fun logout() {
         AnalyticsLogger.logout()
         _state.value = AuthState()
-        _state.value = _state.value.copy(isValidEmail = false, screen = Screen.LOGIN)
+        _state.value = _state.value.copy(isValidEmail = false)
     }
 }
 
@@ -125,16 +125,22 @@ sealed interface AuthEvent {
 
 data class AuthState(
     val email: String = "",
-    val screen: Screen = Screen.LOGIN,
     val error: String? = null,
     val prepopulatedOtp: String? = null,
     val isValidEmail: Boolean = false,
     val sessionStart: Long = 0L,
 )
 
-enum class Screen {
-    LOGIN,
-    OTP,
-    PRODUCT,
-    SESSION,
+@Serializable
+sealed interface Screen {
+    @Serializable
+    data object Login : Screen
+    @Serializable
+    data object Otp : Screen
+    @Serializable
+    data object Product : Screen
+    @Serializable
+    data class ProductPage(val product: com.auth.otpAuthApp.core.domain.model.Product) : Screen
+    @Serializable
+    data object Session : Screen
 }

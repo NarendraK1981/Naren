@@ -26,13 +26,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.auth.otpAuthApp.core.domain.model.Product
 import com.auth.otpAuthApp.core.ui.ProductUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductScreen(
+fun ProductListScreen(
     viewModel: ProductViewModel = hiltViewModel(),
     sessionExpired: () -> Unit,
+    onProductItemClick:(Product) -> Unit
 ) {
     val uiState by viewModel.uiState.observeAsState(ProductUiState.Loading)
 
@@ -91,7 +93,7 @@ fun ProductScreen(
                             .padding(16.dp),
                     ) {
                         items(products) { product ->
-                            ProductCard(product)
+                            ProductCard(product, onProductItemClick)
                             Spacer(modifier = Modifier.height(12.dp))
                         }
                     }

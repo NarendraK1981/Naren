@@ -21,13 +21,14 @@ import coil.compose.AsyncImage
 import com.auth.otpAuthApp.core.domain.model.Product
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(product: Product, onProductItemClick: (Product) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .shadow(4.dp, RoundedCornerShape(12.dp)),
         shape = RoundedCornerShape(12.dp),
+        onClick = { onProductItemClick(product) }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -73,6 +74,8 @@ fun ProductCardPreview() {
             price = 10.0,
             inStock = true,
             thumbnail = "https://via.placeholder.com/150",
+            carouselImages = emptyList()
         ),
+        onProductItemClick = {},
     )
 }

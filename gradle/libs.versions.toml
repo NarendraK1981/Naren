@@ -15,7 +15,7 @@ kotlinxCoroutines = "1.9.0"
 retrofit = "2.11.0"
 jakartaInject = "2.0.1"
 coreKtxVersion = "1.15.0"
-ksp = "2.0.21-1.0.25"
+ksp = "2.0.21-1.0.28"
 annotationJvm = "1.9.1"
 runtimeLivedata = "1.10.2"
 junitKtx = "1.2.1"
@@ -24,6 +24,7 @@ robolectric = "4.14.1"
 room = "2.6.1"
 uiTestJunit4 = "1.7.6"
 coil = "2.7.0"
+kotlinxSerialization = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +51,7 @@ retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ver
 jakarta-inject-api = { group = "jakarta.inject", name = "jakarta.inject-api", version.ref = "jakartaInject" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
 # Aliases for compatibility
 androidx-core-ktx-v1131 = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -72,3 +74,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
