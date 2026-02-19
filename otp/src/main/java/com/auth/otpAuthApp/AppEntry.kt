@@ -91,7 +91,7 @@ fun AppEntry(
 
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Product,
+        startDestination = Screen.Login,
         modifier = modifier
     ) {
         composable<Screen.Login> {
