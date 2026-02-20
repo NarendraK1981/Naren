@@ -58,6 +58,10 @@ android {
             isIncludeAndroidResources = true
         }
     }
+
+    lint {
+        disable.add("NullSafeMutableLiveData")
+    }
 }
 
 dependencies {

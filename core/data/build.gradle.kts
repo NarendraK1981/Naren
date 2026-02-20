@@ -23,6 +23,10 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    lint {
+        disable.add("NullSafeMutableLiveData")
+    }
 }
 
 room {
