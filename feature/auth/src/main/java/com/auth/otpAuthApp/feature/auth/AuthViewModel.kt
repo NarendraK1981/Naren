@@ -85,7 +85,7 @@ class AuthViewModel @Inject constructor() : ViewModel() {
         val otp = otpManager.generateOtp(email)
         AnalyticsLogger.otpGenerated()
         _authEvent.trySend(AuthEvent.LoadOtpScreen)
-        _state.value = _state.value.copy(email = email, prepopulatedOtp = otp)
+        _state.value = _state.value.copy(email = email, prepopulatedOtp = otp, screen = Screen.Otp)
     }
 
     fun verifyOtp(otp: String) {
@@ -106,7 +106,6 @@ class AuthViewModel @Inject constructor() : ViewModel() {
     fun logout() {
         AnalyticsLogger.logout()
         _state.value = AuthState()
-        _state.value = _state.value.copy(isValidEmail = false)
     }
 }
 
@@ -124,6 +123,7 @@ sealed interface AuthEvent {
 }
 
 data class AuthState(
+    val screen: Screen = Screen.Login,
     val email: String = "",
     val error: String? = null,
     val prepopulatedOtp: String? = null,

@@ -37,7 +37,7 @@ class AuthViewModelTest {
 
     @Test
     fun `initial state should be LOGIN`() {
-        assertEquals(Screen.LOGIN, viewModel.state.value.screen)
+        assertEquals(Screen.Login, viewModel.state.value.screen)
         assertEquals("", viewModel.state.value.email)
         assertNull(viewModel.state.value.error)
     }
@@ -53,7 +53,7 @@ class AuthViewModelTest {
         viewModel.validateEmail("invalid-email")
 
         // Advance time to trigger debounce
-        testScheduler.advanceTimeBy(2000)
+        testScheduler.advanceTimeBy(1000)
 
         assertEquals("Invalid email format", viewModel.state.value.error)
     }
@@ -62,7 +62,7 @@ class AuthViewModelTest {
     fun `valid email should not show error after debounce`() = runTest {
         viewModel.validateEmail("valid@example.com")
 
-        testScheduler.advanceTimeBy(2000)
+        testScheduler.advanceTimeBy(1000)
 
         assertNull(viewModel.state.value.error)
     }
@@ -70,7 +70,7 @@ class AuthViewModelTest {
     @Test
     fun `sendOtp should move to OTP screen and integrate with OtpManager`() {
         viewModel.sendOtp("test@example.com")
-        assertEquals(Screen.OTP, viewModel.state.value.screen)
+        assertEquals(Screen.Otp, viewModel.state.value.screen)
         assertEquals("test@example.com", viewModel.state.value.email)
     }
 
@@ -78,7 +78,7 @@ class AuthViewModelTest {
     fun `logout should reset state to LOGIN`() {
         viewModel.sendOtp("test@example.com")
         viewModel.logout()
-        assertEquals(Screen.LOGIN, viewModel.state.value.screen)
+        assertEquals(Screen.Login, viewModel.state.value.screen)
         assertEquals("", viewModel.state.value.email)
     }
 }
