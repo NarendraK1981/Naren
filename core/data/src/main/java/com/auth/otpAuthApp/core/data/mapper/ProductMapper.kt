@@ -3,7 +3,7 @@ package com.auth.otpAuthApp.core.data.mapper
 import com.auth.otpAuthApp.core.common.DateUtils
 import com.auth.otpAuthApp.core.data.ProductEntity
 import com.auth.otpAuthApp.core.data.Review
-import com.auth.otpAuthApp.core.data.model.Product as ProductDto
+import com.auth.otpAuthApp.core.data.model.ProductDto as ProductDto
 import com.auth.otpAuthApp.core.domain.model.Product
 
 fun ProductDto.toDomain(): Product {

@@ -3,7 +3,6 @@ package com.auth.otpAuthApp.core.data.datasource
 import com.auth.otpAuthApp.core.data.ApiService
 import com.auth.otpAuthApp.core.data.mapper.toDomain
 import com.auth.otpAuthApp.core.domain.model.Product
-import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 

@@ -2,10 +2,10 @@ package com.auth.otpAuthApp.core.data.model
 
 
 data class ProductResponse(
-    val products: List<Product>
+    val products: List<ProductDto>
 )
 
-data class Product(
+data class ProductDto(
     val id: Int,
     val title: String,
     val description: String,
