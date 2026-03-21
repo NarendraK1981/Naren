@@ -62,6 +62,7 @@ android {
     lint {
         disable.add("NullSafeMutableLiveData")
         disable.add("RememberInComposition")
+        disable.add("FrequentlyChangingValue")
     }
 }
 
@@ -104,6 +105,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.junit.ktx)
+    testImplementation(libs.mockk)
 
     androidTestImplementation(libs.androidx.junit.ktx)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
