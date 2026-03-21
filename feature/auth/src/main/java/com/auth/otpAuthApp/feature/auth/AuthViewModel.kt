@@ -3,35 +3,43 @@ package com.auth.otpAuthApp.feature.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.auth.otpAuthApp.core.common.AnalyticsLogger
-import com.auth.otpAuthApp.feature.model.OtpManager
+import com.auth.otpAuthApp.core.data.api.OtpApi
+import com.auth.otpAuthApp.core.data.api.OtpRequest
+import com.auth.otpAuthApp.core.data.api.OtpValidationRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 import kotlinx.serialization.Serializable
 
 @HiltViewModel
-class AuthViewModel @Inject constructor() : ViewModel() {
+class AuthViewModel @Inject constructor(
+    private val otpApi: OtpApi
+) : ViewModel() {
     private val _authActions = Channel<AuthAction>(Channel.BUFFERED)
     val authActions: Channel<AuthAction> = _authActions
 
     private val _authEvent = Channel<AuthEvent>(UNLIMITED)
     val authEvent = _authEvent.receiveAsFlow()
 
-    private val otpManager = OtpManager()
     private val _state = MutableStateFlow(AuthState())
     val state: StateFlow<AuthState> = _state
 
-    private val _emailInput = MutableStateFlow("")
-    val emailInput: StateFlow<String> = _emailInput
+    private val _emailInput = MutableSharedFlow<String>(replay = 1)
+    val emailInput: SharedFlow<String> = _emailInput.asSharedFlow()
 
     init {
         observeEmailValidation()
@@ -71,35 +79,59 @@ class AuthViewModel @Inject constructor() : ViewModel() {
                         )
                     _state.value = _state.value.copy(isValidEmail = isValid)
                 } else {
-                    _state.value = _state.value.copy(error = null)
+                    _state.value = _state.value.copy(error = null, isValidEmail = false)
                 }
             }.launchIn(viewModelScope)
     }
 
     fun validateEmail(email: String) {
         _state.value = _state.value.copy(email = email)
-        _emailInput.value = email
+        _emailInput.tryEmit(email)
     }
 
     fun sendOtp(email: String) {
-        val otp = otpManager.generateOtp(email)
-        AnalyticsLogger.otpGenerated()
-        _authEvent.trySend(AuthEvent.LoadOtpScreen)
-        _state.value = _state.value.copy(email = email, prepopulatedOtp = otp, screen = Screen.Otp)
+        viewModelScope.launch {
+            try {
+                Timber.d("Sending OTP request to backend for: %s", email)
+                val response = otpApi.generateOtp(OtpRequest(email))
+                if (response.success) {
+                    AnalyticsLogger.otpGenerated()
+                    _authEvent.trySend(AuthEvent.LoadOtpScreen)
+                    _state.value = _state.value.copy(
+                        email = email,
+                        prepopulatedOtp = response.message.substringAfter(": ").trim(),
+                        screen = Screen.Otp
+                    )
+                } else {
+                    _state.value = _state.value.copy(error = response.message)
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to send OTP")
+                _state.value = _state.value.copy(error = "Network error: ${e.message}")
+            }
+        }
     }
 
     fun verifyOtp(otp: String) {
-        val result = otpManager.validateOtp(_state.value.email, otp)
-        if (result == null) {
-            AnalyticsLogger.otpSuccess()
-            _authEvent.trySend(AuthEvent.LoginSuccess)
-            _state.value =
-                _state.value.copy(
-                    sessionStart = System.currentTimeMillis(),
-                )
-        } else {
-            AnalyticsLogger.otpFailure()
-            _state.value = _state.value.copy(error = result)
+        viewModelScope.launch {
+            try {
+                Timber.d("Verifying OTP for: %s", _state.value.email)
+                val response = otpApi.validateOtp(OtpValidationRequest(_state.value.email, otp))
+                if (response.success) {
+                    AnalyticsLogger.otpSuccess()
+                    _authEvent.trySend(AuthEvent.LoginSuccess)
+                    _state.value =
+                        _state.value.copy(
+                            sessionStart = System.currentTimeMillis(),
+                        )
+                } else {
+                    AnalyticsLogger.otpFailure()
+                    _state.value = _state.value.copy(error = response.message)
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to verify OTP")
+                _state.value = _state.value.copy(error = "Network error: ${e.message}")
+            }
         }
     }
 

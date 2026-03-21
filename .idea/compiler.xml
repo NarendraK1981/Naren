@@ -3,4 +3,11 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="21" />
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="OTPAuthApp.backend" options="-parameters" />
+      <module name="OTPAuthApp.backend.main" options="-parameters" />
+      <module name="OTPAuthApp.backend.test" options="-parameters" />
+    </option>
+  </component>
 </project>

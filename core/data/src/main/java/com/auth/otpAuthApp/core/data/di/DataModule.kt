@@ -7,6 +7,7 @@ import com.auth.otpAuthApp.core.data.ApiService
 import com.auth.otpAuthApp.core.data.ProductDao
 import com.auth.otpAuthApp.core.data.ProductDatabase
 import com.auth.otpAuthApp.core.data.ProductRepositoryImpl
+import com.auth.otpAuthApp.core.data.api.OtpApi
 import com.auth.otpAuthApp.core.domain.GetProductsUseCase
 import com.auth.otpAuthApp.core.domain.ProductRepository
 import dagger.Binds
@@ -38,6 +39,17 @@ abstract class DataModule {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(ApiService::class.java)
+        }
+
+        @Provides
+        @Singleton
+        fun provideOtpApi(): OtpApi {
+            // 10.0.2.2 is the special IP address to access localhost from the Android emulator
+            return Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8081/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(OtpApi::class.java)
         }
 
         @Provides

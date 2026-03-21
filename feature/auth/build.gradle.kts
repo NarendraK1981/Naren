@@ -37,6 +37,7 @@ android {
 dependencies {
     implementation(libs.common)
     implementation(libs.domain)
+    implementation(libs.data) // Added dependency to core:data to access OtpApi
     implementation(libs.ui)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)

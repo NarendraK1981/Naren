@@ -24,7 +24,7 @@ fun LoginScreen(
     onLoginClick: (String) -> Unit,
 ) {
     val state = vm.state.collectAsState().value
-    val email = vm.emailInput.collectAsState().value
+    val email = vm.emailInput.collectAsState("").value
 
     Column(
         modifier =
