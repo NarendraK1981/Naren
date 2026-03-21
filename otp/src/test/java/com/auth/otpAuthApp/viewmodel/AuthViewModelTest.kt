@@ -11,6 +11,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -29,6 +30,7 @@ import org.robolectric.annotation.Config
 class AuthViewModelTest {
     private lateinit var viewModel: AuthViewModel
     private lateinit var otpApi: OtpApi
+    
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
@@ -44,14 +46,14 @@ class AuthViewModelTest {
     }
 
     @Test
-    fun `initial state should be LOGIN`() {
+    fun `initial state should be LOGIN`() = runTest {
         assertEquals(Screen.Login, viewModel.state.value.screen)
         assertEquals("", viewModel.state.value.email)
         assertNull(viewModel.state.value.error)
     }
 
     @Test
-    fun `validateEmail should update email in state immediately`() {
+    fun `validateEmail should update email in state immediately`() = runTest {
         viewModel.validateEmail("test@example.com")
         assertEquals("test@example.com", viewModel.state.value.email)
     }
@@ -60,8 +62,10 @@ class AuthViewModelTest {
     fun `invalid email should show error after debounce`() = runTest {
         viewModel.validateEmail("invalid-email")
 
-        // Advance time to trigger debounce
-        testScheduler.advanceTimeBy(1000)
+        // Advance time to trigger debounce (300ms in ViewModel)
+        advanceTimeBy(400)
+        // Also need to yield to allow the onEach block to run
+        advanceUntilIdle()
 
         assertEquals("Invalid email format", viewModel.state.value.error)
     }
@@ -70,7 +74,8 @@ class AuthViewModelTest {
     fun `valid email should not show error after debounce`() = runTest {
         viewModel.validateEmail("valid@example.com")
 
-        testScheduler.advanceTimeBy(1000)
+        advanceTimeBy(400)
+        advanceUntilIdle()
 
         assertNull(viewModel.state.value.error)
     }
