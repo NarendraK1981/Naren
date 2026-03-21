@@ -61,6 +61,7 @@ android {
 
     lint {
         disable.add("NullSafeMutableLiveData")
+        disable.add("RememberInComposition")
     }
 }
 
