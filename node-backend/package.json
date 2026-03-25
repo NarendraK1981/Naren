@@ -1,0 +1,16 @@
+{
+  "name": "otp-backend-node",
+  "version": "1.0.0",
+  "description": "Node.js OTP Service",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "debug": "node --inspect server.js"
+  },
+
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.3",
+    "sqlite3": "^6.0.1"
+  }
+}
