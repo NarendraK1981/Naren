@@ -8,9 +8,9 @@ data class OtpValidationRequest(val email: String, val otp: String)
 data class OtpResponse(val message: String, val success: Boolean)
 
 interface OtpApi {
-    @POST("/api/otp/generate")
+    @POST("/generate-otp")
     suspend fun generateOtp(@Body request: OtpRequest): OtpResponse
 
-    @POST("/api/otp/validate")
+    @POST("/validate-otp")
     suspend fun validateOtp(@Body request: OtpValidationRequest): OtpResponse
 }
