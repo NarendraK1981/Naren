@@ -6,6 +6,7 @@ import com.auth.otpAuthApp.core.common.AnalyticsLogger
 import com.auth.otpAuthApp.core.data.api.OtpApi
 import com.auth.otpAuthApp.core.data.api.OtpRequest
 import com.auth.otpAuthApp.core.data.api.OtpValidationRequest
+import com.auth.otpAuthApp.core.data.api.RegisterUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -39,15 +40,34 @@ class AuthViewModel @Inject constructor(
     val state: StateFlow<AuthState> = _state
 
     private val _emailInput = MutableSharedFlow<String>(replay = 1)
+    private val _passwordInput = MutableSharedFlow<String>(replay = 1)
     val emailInput: SharedFlow<String> = _emailInput.asSharedFlow()
+    val passwordInput: SharedFlow<String> = _passwordInput.asSharedFlow()
 
     init {
+       
+        observePasswordValidation()
         observeEmailValidation()
-
         _authActions
             .consumeAsFlow()
             .onEach { action ->
                 handleAction(action)
+            }.launchIn(viewModelScope)
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun observePasswordValidation() {
+        _passwordInput
+            .debounce(300L)
+            .onEach { password ->
+                if (password.isNotEmpty()) {
+                    _state.value = _state.value.copy(
+                        error = if (password.length >= 6) null else "Password must be at least 6 characters",
+                    )
+                    _state.value = _state.value.copy(isValidPassword = password.length >= 6)
+                } else {
+                    _state.value = _state.value.copy(error = null, isValidPassword = false)
+                }
             }.launchIn(viewModelScope)
     }
 
@@ -59,6 +79,9 @@ class AuthViewModel @Inject constructor(
 
             is AuthAction.Otp -> {
                 _authEvent.trySend(AuthEvent.Otp(action.otp))
+            }
+            is AuthAction.Register -> {
+                _authEvent.trySend(AuthEvent.Register(action.email, action.pwd))
             }
         }
     }
@@ -89,6 +112,11 @@ class AuthViewModel @Inject constructor(
         _emailInput.tryEmit(email)
     }
 
+    fun validatePassword(pwd:String) {
+        _state.value = _state.value.copy(pwd = pwd)
+        _passwordInput.tryEmit(pwd)
+    }
+
     fun sendOtp(email: String) {
         viewModelScope.launch {
             try {
@@ -108,6 +136,24 @@ class AuthViewModel @Inject constructor(
             } catch (e: Exception) {
                 Timber.e(e, "Failed to send OTP")
                 _state.value = _state.value.copy(error = "Network error: ${e.message}")
+            }
+        }
+    }
+
+    fun register(email: String, pwd: String) {
+        viewModelScope.launch {
+            try {
+                Timber.d("Registering user: %s", email)
+                val response = otpApi.registerUser(RegisterUser(email, pwd))
+                Timber.d("Registration response: %s", response.message)
+
+                if(response.success) {
+                    Timber.d("Registration response: %s", response.success)
+                    _authEvent.trySend(AuthEvent.Login(email))
+                }
+
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to Registering")
             }
         }
     }
@@ -143,12 +189,16 @@ class AuthViewModel @Inject constructor(
 
 sealed class AuthAction {
     data class Login(val email: String) : AuthAction()
+
+    data class Register(val email: String, val pwd: String) : AuthAction()
     data class Otp(val otp: String) : AuthAction()
 }
 
 sealed interface AuthEvent {
     data class Login(val email: String) : AuthEvent
     data class Otp(val otp: String) : AuthEvent
+
+    data class Register(val email: String, val pwd: String) : AuthEvent
     object LoadOtpScreen : AuthEvent
     object LoginSuccess : AuthEvent
     object LogOut : AuthEvent
@@ -157,9 +207,11 @@ sealed interface AuthEvent {
 data class AuthState(
     val screen: Screen = Screen.Login,
     val email: String = "",
+    val pwd: String = "",
     val error: String? = null,
     val prepopulatedOtp: String? = null,
     val isValidEmail: Boolean = false,
+    val isValidPassword: Boolean = false,
     val sessionStart: Long = 0L,
 )
 
@@ -167,6 +219,8 @@ data class AuthState(
 sealed interface Screen {
     @Serializable
     data object Login : Screen
+    @Serializable
+    data object Register : Screen
     @Serializable
     data object Otp : Screen
     @Serializable

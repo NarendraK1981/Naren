@@ -127,7 +127,7 @@ app.post('/register', (req, res) => {
             return res.status(500).json({ error: 'Database error', detail: err.message });
         }
 
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ message: 'User registered successfully', success: true });
     });
 });
 

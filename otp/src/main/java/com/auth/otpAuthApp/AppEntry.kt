@@ -18,6 +18,7 @@ import com.auth.otpAuthApp.feature.auth.AuthEvent
 import com.auth.otpAuthApp.feature.auth.AuthViewModel
 import com.auth.otpAuthApp.feature.auth.LoginScreen
 import com.auth.otpAuthApp.feature.auth.OtpScreen
+import com.auth.otpAuthApp.feature.auth.RegisterScreen
 import com.auth.otpAuthApp.feature.auth.Screen
 import com.auth.otpAuthApp.feature.auth.SessionScreen
 import com.auth.otpAuthApp.feature.products.ProductListScreen
@@ -38,6 +39,9 @@ fun AppEntry(
 
     val onLoginClick: (String) -> Unit = { email ->
         viewModel.authActions.trySend(AuthAction.Login(email))
+    }
+    val onRegisterClick: (String, String) -> Unit = { email, pwd ->
+        viewModel.authActions.trySend(AuthAction.Register(email, pwd))
     }
 
     val validateOtp: (String) -> Unit = { otp ->
@@ -69,6 +73,9 @@ fun AppEntry(
                     is AuthEvent.Otp -> {
                         viewModel.verifyOtp(event.otp)
                     }
+                    is AuthEvent.Register -> {
+                        viewModel.register(event.email, event.pwd)
+                    }
 
                     is AuthEvent.LoadOtpScreen -> {
                         navHostController.navigate(Screen.Otp)
@@ -91,11 +98,15 @@ fun AppEntry(
 
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Login,
+        startDestination = Screen.Register,
         modifier = modifier
     ) {
         composable<Screen.Login> {
             LoginScreen(viewModel, onLoginClick)
+        }
+
+        composable<Screen.Register> {
+            RegisterScreen(viewModel, onRegisterClick)
         }
         composable<Screen.Otp> {
             OtpScreen(viewModel, validateOtp)
